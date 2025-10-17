@@ -1,8 +1,10 @@
 # **RDD**: **R**etrieval-Based **D**emonstration **D**ecomposer for Planner Alignment in Long-Horizon Tasks
 
-<!-- [![arXiv](https://img.shields.io/badge/arXiv-TODO-<COLOR>.svg)]() -->
-
+[![arXiv](https://img.shields.io/badge/arXiv-2510.14968-red)](https://arxiv.org/pdf/2510.14968)
 [![Website](https://img.shields.io/badge/Website-RDD-blue)](https://rdd-neurips.github.io/)
+![NeurIPS](https://img.shields.io/badge/NeurIPS-2025-purple)
+![License](https://img.shields.io/badge/license-MIT-blue.svg)
+
 
 
 **RDD** is an retrieval-based visual demonstration decomposer that automatically identifies sub-tasks visually similar to a set of existing expert-labeled sub-tasks.
@@ -33,3 +35,17 @@
 
 * [ ] Release the core algorithm and demo scripts on AgiBotWorld & RoboCerebra. (ETA: by the end of Oct.2025).
 * [ ] Release use case scripts on hiearchical VLA (RACER). (ETA: by the end of Nov.2025)
+
+
+## Citation
+
+If you find this work useful, please consider citing our paper:
+
+```bibtex
+@inproceedings{yan2025rdd,
+  title={RDD: Retrieval-Based Demonstration Decomposer for Planner Alignment in Long-Horizon Tasks},
+  author={Yan, Mingxuan and Wang, Yuping and Liu, Zechun and Li, Jiachen},
+  booktitle={Proceedings of the 39th Annual Conference on Neural Information Processing Systems (NeurIPS)},
+  year={2025},
+}
+```
