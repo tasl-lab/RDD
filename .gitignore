@@ -1,4 +1,5 @@
+3rdparty
+__pycache__
 data
 .vscode
 .old
-**/__pycache__
