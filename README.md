@@ -33,8 +33,7 @@ Set up python environment:
 
 ```
 conda create -n rdd python==3.9 -y && conda activate rdd
-python -m pip install pip==24.0
-pip install -r scripts/setup/requirements.txt
+./scripts/setup/setup_rdd_env.sh
 ```
 
 This default installation only supports encoders `LIV`, `ClIP`, `ResNet`. To install full support for other encoders (  `VIP `, `R3M `, `VC-1`) please follow [setup_rdd_env.sh](./scripts/setup/setup_rdd_env.sh).
