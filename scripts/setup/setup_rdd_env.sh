@@ -30,6 +30,7 @@ source activate base && conda activate $env_name
 # uvd code base
 cd $lib_path
 git clone https://github.com/zcczhang/UVD
+cd UVD && git checkout e7d657a35912273604edeb1f1d7016bdfc206596
 cd $root_path
 # patch UVD requirements.txt
 cp .patches/UVD/uvd_requirements.txt  $lib_path/UVD/requirements.txt
@@ -39,7 +40,8 @@ cd UVD && pip install -e .
 # LIV&CLIP
 cd $model_lib_path
 git clone https://github.com/penn-pal-lab/LIV.git
-cd LIV && pip install -e . && cd liv/models/clip && pip install -e .
+cd LIV && git checkout a12991f53aab01f3cecc1315a81068ba12e2bd6b
+pip install -e . && cd liv/models/clip && pip install -e .
 
 # set up annoy: https://github.com/spotify/annoy
 pip install --user annoy
@@ -58,14 +60,17 @@ python -c "from liv import load_liv; liv = load_liv()"
 # # VIP
 # cd $model_lib_path
 # git clone https://github.com/facebookresearch/vip.git
-# cd vip && pip install -e .
+# cd vip && git checkout f98ca99bcaf9f7e00ccd1c99735d77f55c53dd69
+# pip install -e .
 
 # # R3M
 # cd $model_lib_path
 # git clone https://github.com/facebookresearch/r3m.git
-# cd r3m && pip install -e .
+# cd r3m && git checkout b2334e726887fa0206962d7984c69c5fb09cceab
+# pip install -e .
 
 # # VC1
 # cd $model_lib_path
 # git clone https://github.com/facebookresearch/eai-vc.git 
-# cd eai-vc && pip install -e vc_models
+# cd eai-vc && git checkout 76fe35e87b1937168f1ec4b236e863451883eaf3
+# pip install -e vc_models
