@@ -17,7 +17,7 @@ def convert_robocerebra_to_rlbench(
 	num_episodes: int = typer.Option(None),
 	downsample_rate: int = typer.Option(12, help='Downsample rate for frames extraction. 1 means no downsampling.'),
 	trainset_ratio: float = typer.Option(0.8, help='Ratio of episodes to use for training set. The rest will be used for validation.'),
-	intermediate_steps: int = typer.Option(2, help='Number of frames per segment.'),
+	intermediate_steps: int = typer.Option(2, help='Number of intermediate frames per segment.'),
 ):
 	assert intermediate_steps >= 0, "number of intermediate frames must be prositive"
 	# output paths
