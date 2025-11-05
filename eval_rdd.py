@@ -5,6 +5,7 @@ sys.path.append(os.getcwd())
 from typing import List, Tuple, Any, Dict
 import requests
 import pprint
+import re
 
 import typer
 from sqlmodel import Field
@@ -24,6 +25,15 @@ TASKS = None
 METHODS = ['rdd', 'uvd']
 
 
+def _sort_key(x):
+	# Try to find the first integer in the name
+	m = re.search(r'\d+', x.name)
+	if m:
+		return int(m.group())
+	else:
+		# fallback: use the string itself
+		return x.name
+
 def load_split(dataset_path: PathLike, views: List[str]):
 	"""
 	returns: {task: (ep, frame, view)}
@@ -33,7 +43,7 @@ def load_split(dataset_path: PathLike, views: List[str]):
 		task_name = task_path.name
 		task_vids = []
 		episode_dirs = list_dir(task_path)
-		for ep_path in sorted(episode_dirs, key=lambda x: int(x.name.split('case')[-1])):
+		for ep_path in sorted(episode_dirs, key=_sort_key):
 			ep_vid_frames = []
 			for view_path in list_dir(ep_path):
 				if view_path.name not in views:
@@ -79,7 +89,7 @@ def load_gt_segments(gt_dataset_path: PathLike) -> Dict[str, List[List[int]]]:
 			continue
 		episode_dirs = list_dir(task_path)
 		task_ep_segments = []
-		for ep_path in sorted(episode_dirs, key=lambda x: int(x.name.split('case')[-1]))[:EP_NUM]:
+		for ep_path in sorted(episode_dirs, key=_sort_key)[:EP_NUM]:
 			keypoint_path = sorted(list((ep_path / 'front_rgb').glob('*_expert.png')), key=lambda x: int(x.name.split('_')[0]))
 			keypoints = [k.name.split('_')[0] for k in keypoint_path]
 			task_ep_segments.append([[int(b), int(e)] for b, e in zip(keypoints[:-1], keypoints[1:])])
@@ -128,8 +138,8 @@ def get_accuracy(seg_pred, seg_gt):
 
 
 def main(
-	dataset_path: str = typer.Argument('data/rlbench_raw/robocerebra/'),
-	results_save_path: str = typer.Argument('data/eval_out/robocerebra/'),
+	dataset_path: str,
+	results_save_path: str,
 	preprocessor: str = typer.Argument('liv'),
 	worker_num: int = typer.Option(4, help='Number of workers for concurrent processing.'),
 	rdd_port: int = typer.Option(8001, help='Port number for the RDD server.'),
@@ -146,7 +156,7 @@ def main(
 	if not eval_only:
 		if (Path(results_save_path) / 'results.db').exists():
 			remove_path(Path(results_save_path) / 'results.db')
-			input('Romoving old results database? press Enter to continue...')
+			input(f'Romoving old results database at {results_save_path}? press Enter to continue...')
 			print(f"Removed old results database at {results_save_path}/results.db")
 		results = Database(Path(results_save_path) / 'results.db', entry_class=Results, auto_commit=True)
 		# pool = AsyncWorkerPool(worker_num=worker_num, worker_type='thread')
