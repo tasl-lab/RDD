@@ -110,7 +110,8 @@ def rdd_score(
 	beta: float = 1.0,
 	dist_list: List[float] = None, 
 	nn_list: dict = None,
-	mode: Literal['default', 'ood'] = 'default'
+	mode: Literal['default', 'ood'] = 'default',
+	uvd_cache: dict = None
 	):
 	s, e = subarray[0], subarray[-1]
 	assert s < e, "subarray must be a valid segment"
@@ -125,11 +126,17 @@ def rdd_score(
  
 	# uvd score: assume the last segment is the goal frame, evaluate the accuracy of the beginning of the last segment
 	if beta != 0.:
-		uvd_segs = uvd_decompose(embeds[:e+1], keypoint_num=1)
-		last_uvd_seg_starts_at = uvd_segs[-1][0]
+		if uvd_cache is not None and e in uvd_cache:
+			last_uvd_seg_starts_at = uvd_cache[e]
+		else:
+			uvd_segs = uvd_decompose(embeds[:e+1], keypoint_num=1)
+			last_uvd_seg_starts_at = uvd_segs[-1][0]
+		if uvd_cache is not None:
+			uvd_cache[e] = last_uvd_seg_starts_at
 		uvd_penalty = abs(s - last_uvd_seg_starts_at) / (e - s)
 	else:
 		uvd_penalty = 0.0
+
 
 	# alpha
 	if mode == 'ood':

@@ -46,7 +46,7 @@ def _rdd_decompose(
 	array = list(range(vid_len))
 	nn_list = {}
 	segments = max_sum_partition(array, rdd_score, min_len=2, max_len=args.max_len, alpha=args.alpha, beta=args.beta,
-								searcher=searcher, embeds=embeds, nn_list=nn_list, mode=args.mode)
+								searcher=searcher, embeds=embeds, nn_list=nn_list, mode=args.mode, uvd_cache={})
 	nn_list = [nn_list[str(seg)] for seg in segments[1]] # get the nearest neighbor of each segment
 	return segments[1], nn_list
 
