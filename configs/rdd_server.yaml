@@ -8,12 +8,19 @@ debug: false
 max_len: 100
 
 alpha: 1.0
-beta: 0.25
 
-# agibotworld
-vec_database_path: "data/vec_databases/agibotworld_train/train"
-mode: "default" # * will set beta to 0.0
+
+# # agibotworld
+# vec_database_path: "data/vec_databases/agibotworld_train/train"
+# mode: "default"
+# beta: 0.25
 
 # # robocerebra
 # vec_database_path: "data/vec_databases/robocerebra_train/train"
 # mode: "ood" # * will set alpha to 0.0
+# beta: 0.25
+
+# demo
+vec_database_path: "data/vec_databases/clean_kitchen/train"
+mode: "ood" # * will set alpha to 0.0
+beta: 0.1
