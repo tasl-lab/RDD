@@ -140,6 +140,7 @@ def rdd_score(
 
 	# alpha
 	if mode == 'ood':
+		print("\033[31m[WARNING]: Setting alpha to 0.0 since mode is ood.\033[0m")
 		alpha = 0.0
 	
 	# log

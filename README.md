@@ -38,9 +38,63 @@ conda create -n rdd python==3.9 -y && conda activate rdd
 
 This default installation only supports encoders `LIV`, `ClIP`, `ResNet`. To install full support for other encoders (  `VIP `, `R3M `, `VC-1`) please follow [setup_rdd_env.sh](./scripts/setup/setup_rdd_env.sh).
 
-# Demonstration Decomposition
+# Example #1: Kitchen Cleaning
 
-## Prepare Datasets
+In this simple example, we'll explore the decomposition for two tasks about putting away kitechenwares.
+
+### Cut the .mov into Image Frames
+
+```
+python scripts/dataset/video_to_frames.py resources/clean_kitchen/IMG_0600.MOV data/raw_data/clean_kitchen/IMG_0600 --fps 10 --height 720 
+python scripts/dataset/video_to_frames.py resources/clean_kitchen/IMG_0601.MOV data/raw_data/clean_kitchen/IMG_0601 --fps 10 --height 720
+```
+
+### Convert the Frames into RLBench Format
+
+```
+python scripts/dataset/frames_dataset_proc.py data/raw_data/clean_kitchen data/datasets/clean_kitchen --task-name demo_task
+```
+
+### Build Vector Datasets
+
+```
+python build_vec_database.py 0 liv 1.0 data/datasets/clean_kitchen/splits/train \
+	--name-suffix clean_kitchen \
+	--views front_rgb \
+	--embed-mode ood
+```
+
+### Config and Start RDD server
+
+1. Set path to vector databases & interval similarity scroing mode in  [configs/rdd_server.yaml](configs/rdd_server.yaml)
+
+   ```
+   # agibotworld
+   vec_database_path: "data/vec_databases/agibotworld_train/train"
+   mode: "default" # * will set beta to 0.0
+   ```
+2. Start service
+
+   ```
+   uvicorn rdd_server:app --port 8001 --workers 8
+   ```
+
+### Decompose and Evaluate
+
+```
+python eval_rdd.py \
+	data/datasets/clean_kitchen \
+	data/eval_out/clean_kitchen \
+	--worker-num=4
+```
+
+You can then view the starting frames of each subtask at `data/eval_out/clean_kitchen/visualization/demo_task/ep_0/rdd`.
+
+# Example #2: AgiBotWorld & RoboCerebra
+
+We now explore using RDD and the publich datasets.
+
+### Prepare Datasets
 
 This section will format the raw datasets to a unified RLBench-like structure:
 

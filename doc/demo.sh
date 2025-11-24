@@ -1,8 +1,8 @@
 # Build Dataset
 
 ```
-python scripts/dataset/video_to_frames.py data/raw_data/clean_kitchen/IMG_0600.MOV --fps 10 --height 720
-python scripts/dataset/video_to_frames.py data/raw_data/clean_kitchen/IMG_0601.MOV --fps 10 --height 720
+python scripts/dataset/video_to_frames.py resources/clean_kitchen/IMG_0600.MOV data/raw_data/clean_kitchen/IMG_0600 --fps 10 --height 720 
+python scripts/dataset/video_to_frames.py resources/clean_kitchen/IMG_0601.MOV data/raw_data/clean_kitchen/IMG_0601 --fps 10 --height 720
 
 rm -r data/datasets/clean_kitchen
 python scripts/dataset/frames_dataset_proc.py data/raw_data/clean_kitchen data/datasets/clean_kitchen --task-name demo_task
