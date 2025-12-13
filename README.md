@@ -53,6 +53,7 @@ python scripts/dataset/video_to_frames.py resources/clean_kitchen/IMG_0601.MOV d
 ### Convert the Frames into RLBench Format
 
 ```
+cp resources/clean_kitchen/IMG_0600.txt data/raw_data/clean_kitchen/IMG_0600/info.txt
 python scripts/dataset/frames_dataset_proc.py data/raw_data/clean_kitchen data/datasets/clean_kitchen --task-name demo_task
 ```
 
