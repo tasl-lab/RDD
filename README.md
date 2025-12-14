@@ -1,9 +1,9 @@
 # **RDD**: **R**etrieval-Based **D**emonstration **D**ecomposer
 
-[![arXiv](https://img.shields.io/badge/arXiv-2510.14968-red)](https://arxiv.org/pdf/2510.14968)
+[![Paper](https://img.shields.io/badge/Paper-arXiv-red)](https://arxiv.org/pdf/2510.14968)
 [![Website](https://img.shields.io/badge/Website-RDD-blue)](https://rdd-neurips.github.io/)
 [![NeurIPS](https://img.shields.io/badge/NeurIPS-2025-purple)](https://neurips.cc/virtual/2025/loc/san-diego/poster/115042)
-[![YouTube](https://img.shields.io/badge/YouTube-Video-white)](https://www.youtube.com/watch?v=bwCgUyqdT6s&embeds_referring_euri=https%3A%2F%2Frdd-neurips.github.io%2F&source_ve_path=OTY3MTQ)
+[![Video](https://img.shields.io/badge/Video-YouTube-white)](https://www.youtube.com/watch?v=bwCgUyqdT6s&embeds_referring_euri=https%3A%2F%2Frdd-neurips.github.io%2F&source_ve_path=OTY3MTQ)
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 
 <p align="center">
