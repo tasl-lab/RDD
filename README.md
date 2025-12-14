@@ -40,195 +40,49 @@ This default installation only supports encoders `LIV`, `ClIP`, `ResNet`. To ins
 
 # Example #1: Kitchen Cleaning
 
-In this simple example, we'll explore the decomposition for two tasks about putting away kitechenwares.
-
-### Cut the .mov into Image Frames
-
-```
-python scripts/dataset/video_to_frames.py resources/clean_kitchen/IMG_0600.MOV data/raw_data/clean_kitchen/IMG_0600 --fps 10 --height 720 
-python scripts/dataset/video_to_frames.py resources/clean_kitchen/IMG_0601.MOV data/raw_data/clean_kitchen/IMG_0601 --fps 10 --height 720
-```
-
-### Convert the Frames into RLBench Format
-
-```
-cp resources/clean_kitchen/IMG_0600.txt data/raw_data/clean_kitchen/IMG_0600/info.txt
-cp resources/clean_kitchen/IMG_0601.txt data/raw_data/clean_kitchen/IMG_0601/info.txt
-python scripts/dataset/frames_dataset_proc.py data/raw_data/clean_kitchen data/datasets/clean_kitchen --task-name demo_task
-```
-
-### Build Vector Datasets
-
-```
-python build_vec_database.py 0 liv 1.0 data/datasets/clean_kitchen/splits/train \
-	--name-suffix clean_kitchen \
-	--views front_rgb \
-	--embed-mode ood
-```
-
-### Config and Start RDD server
-
-1. Set path to vector databases & interval similarity scroing mode in  [configs/rdd_server.yaml](configs/rdd_server.yaml)
-
-   ```
-   vec_database_path: "data/vec_databases/clean_kitchen/train"
-   mode: "ood"
-   ```
-2. Start service
-
-   ```
-   uvicorn rdd_server:app --port 8001 --workers 8
-   ```
-
-### Decompose and Evaluate
-
-```
-python eval_rdd.py \
-	data/datasets/clean_kitchen \
-	data/eval_out/clean_kitchen \
-	--worker-num=4
-```
-
-You can then view the starting frames of each subtask at `data/eval_out/clean_kitchen/visualization/demo_task/ep_0/rdd`.
+See [kitchen_demo.md](doc/kitchen_demo.md)
 
 # Example #2: Franka Object Arranging
 
-Please refer to [franka_demo.md](doc/franka_demo.md)
+See [franka_demo.md](doc/franka_demo.md)
 
 # Example #3: AgiBotWorld & RoboCerebra
 
-We now explore using RDD and the publich datasets.
+See [agi_cerebra_demo.md](doc/agi_cerebra_demo.md)
 
-### Prepare Datasets
+# Custom Prior
 
-This section will format the raw datasets to a unified RLBench-like structure:
+RDD allows you to define your own sub-task prior.
 
-```bash
-├── metadata
-│   └── metadata.pkl
-├── raw
-│   └── ...
-├── seg
-│   └── ...
-└── splits
-    ├── train
-        ├── <task>
-            └── <episode>
-                └── <view>
-        └── ...
-    ├── val
-        └── ...
-    └── val_gt
-        └── ...
+## Custom Sub-task Feature
+
+In RDD the sub-task is represented by the feature of of ending frame / starting frame. You can define your own sub-task feature by modifying sub-task feature generation class  ` subtask_embeds_to_feature` in  `rdd/embed.py`
+
+```python
+class subtask_embeds_to_feature(object):
+	@staticmethod
+	def feature_dim(embed_dim: int, mode: str) -> int:
+		<your feature dim>
+	def __call__(self, embeds: Union[np.ndarray, torch.Tensor], mode: str) -> np.ndarray:
+		"""
+		input: embeds (L, N)
+		output: feature (2N,) or (N,) if mode=='ood'
+		"""
+		<your implementation>
 ```
 
-**AgiBotWorld**
+## Custom Sub-task Prior Score
 
-Download from [agibot-world/AgiBotWorld-Alpha](https://huggingface.co/datasets/agibot-world/AgiBotWorld-Alpha#download-the-dataset) to `RDD/data/datasets`. the file structure should look like
+You can also define a completely custimized sub-task prior score by modifying `rdd_score` in `rdd/algorithms.py`
 
-```
-RDD/data/datasets/AgiBot-World/AgiBotWorld-Alpha
-├── observations
-│   ├──...
-│   └── 327
-└── task_info
-    ├──...
-    └── task_327.json
-```
-
-Format to RLBench-like dataset
-
-```
-python scripts/dataset/agibotworld2rlbench.py \
-	data/datasets/agibotworld/AgiBot-World/AgiBotWorld-Alpha \
-	data/datasets/agibotworld/AgiBot-World/AgiBotWorld-Alpha_rlbench \
-	16 \
-	--num-episodes 190
-```
-
-**RoboCerebra**
-
-Download the training set from [qiukingballball/RoboCerebra](https://huggingface.co/datasets/qiukingballball/RoboCerebra/tree/main/RoboCerebra_trainset) to `RDD/data/datasets`. the file structure should look like
-
-```
-RDD/data/datasets/RoboCerebra/homerobo_trainingset/
-├── coffee_table
-├── kitchen_table
-├── study_table
-|...
-```
-
-Format to RLBench-like dataset
-
-```
-python scripts/dataset/robocerebra_proc.py \
-	data/datasets/RoboCerebra/homerobo_trainingset \
-	data/datasets/RoboCerebra/homerobo_trainingset_rlbench \
-	16 \
-	--num-episodes 700
-```
-
-## Build Vector Datasets
-
-**AgiBotWorld**
-
-```bash
-python build_vec_database.py 0 liv 1.0 data/datasets/AgiBot-World/AgiBotWorld-Alpha_rlbench/splits/train \
-	--name-suffix agibotworld_train \
-	--views front_rgb \
-	--embed-mode default
-```
-
-**RoboCerebra (OOD)**
-
-```bash
-python build_vec_database.py 0 liv 1.0 data/datasets/RoboCerebra/homerobo_trainingset_rlbench/splits/train \
-	--name-suffix robocerebra_train \
-	--views front_rgb \
-	--embed-mode ood
-```
-
-The generated vector database will be saved at `/data/vec_databases/<name-suffix>/<split>`
-
-## Demonstration Decomposition
-
-**Config and Start RDD server**
-
-1. Set path to vector databases & interval similarity scroing mode in  [configs/rdd_server.yaml](configs/rdd_server.yaml)
-
-   ```yaml
-   # agibotworld
-   vec_database_path: "data/vec_databases/agibotworld_train/train"
-   mode: "default" # * will set beta to 0.0
-   ```
-
-   ```yaml
-   # robocerebra
-   vec_database_path: "data/vec_databases/robocerebra_train/train"
-   mode: "ood" # * will set alpha to 0.0
-   ```
-2. Start service
-
-   ```
-   uvicorn rdd_server:app --port 8001 --workers 8
-   ```
-
-**Decompose and Evaluate**
-
-```bash
-# agibotworld
-python eval_rdd.py \
-	data/datasets/AgiBot-World/AgiBotWorld-Alpha_rlbench \
-	--ep-num=8 \
-	--worker-num=8
-```
-
-```bash
-# robocerebra
-python eval_rdd.py \
-	data/datasets/RoboCerebra/homerobo_trainingset_rlbench \
-	--ep-num=8 \
-	--worker-num=8
+```python
+def rdd_score(
+	subarray: List[int], 
+	searcher: AnnoySearcher, 
+	embeds: np.ndarray, 
+	...
+	):
+	<your implementation>
 ```
 
 ## Checklist
