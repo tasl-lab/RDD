@@ -1,4 +1,4 @@
-# **RDD**: **R**etrieval-Based **D**emonstration **D**ecomposer for Planner Alignment in Long-Horizon Tasks
+# **RDD**: **R**etrieval-Based **D**emonstration **D**ecomposer
 
 [![arXiv](https://img.shields.io/badge/arXiv-2510.14968-red)](https://arxiv.org/pdf/2510.14968)
 [![Website](https://img.shields.io/badge/Website-RDD-blue)](https://rdd-neurips.github.io/)
