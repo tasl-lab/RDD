@@ -54,6 +54,7 @@ python scripts/dataset/video_to_frames.py resources/clean_kitchen/IMG_0601.MOV d
 
 ```
 cp resources/clean_kitchen/IMG_0600.txt data/raw_data/clean_kitchen/IMG_0600/info.txt
+cp resources/clean_kitchen/IMG_0601.txt data/raw_data/clean_kitchen/IMG_0601/info.txt
 python scripts/dataset/frames_dataset_proc.py data/raw_data/clean_kitchen data/datasets/clean_kitchen --task-name demo_task
 ```
 
@@ -71,9 +72,8 @@ python build_vec_database.py 0 liv 1.0 data/datasets/clean_kitchen/splits/train 
 1. Set path to vector databases & interval similarity scroing mode in  [configs/rdd_server.yaml](configs/rdd_server.yaml)
 
    ```
-   # agibotworld
-   vec_database_path: "data/vec_databases/agibotworld_train/train"
-   mode: "default" # * will set beta to 0.0
+   vec_database_path: "data/vec_databases/clean_kitchen/train"
+   mode: "ood"
    ```
 2. Start service
 
