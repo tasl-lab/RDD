@@ -9,8 +9,13 @@ max_len: 100
 
 alpha: 1.0
 
+# # clean kithen
+# vec_database_path: "data/vec_databases/clean_kitchen/train"
+# mode: "ood" # * will override alpha to 0.0
+# beta: 0.1
+
 # clean kithen
-vec_database_path: "data/vec_databases/clean_kitchen/train"
+vec_database_path: "data/vec_databases/franka/train"
 mode: "ood" # * will override alpha to 0.0
 beta: 0.1
 

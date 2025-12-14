@@ -119,6 +119,10 @@ This section will format the raw datasets to a unified RLBench-like structure:
         └── ...
 ```
 
+# Example #2: Franka Object Arranging
+
+Please refer to [franka_demo.md](doc/franka_demo.md)
+
 **AgiBotWorld**
 
 Download from [agibot-world/AgiBotWorld-Alpha](https://huggingface.co/datasets/agibot-world/AgiBotWorld-Alpha#download-the-dataset) to `RDD/data/datasets`. the file structure should look like
