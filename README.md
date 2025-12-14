@@ -7,12 +7,14 @@
 
 **RDD** is an retrieval-based visual demonstration decomposer that automatically identifies sub-tasks visually similar to a set of existing expert-labeled sub-tasks.
 
-[Mingxuan Yan](https://waterhyacinthinnanhu.github.io/) `<sup>`1 `</sup>`,
-[Yuping Wang](https://www.linkedin.com/in/yuping-wang-5a7178185/) `<sup>`1,2 `</sup>`,
-[Zechun Liu](https://zechunliu.com/) `<sup>`3 `</sup>`,
-[Jiachen Li](https://jiachenli94.github.io/) `<sup>`1 `</sup>`
+[Mingxuan Yan](https://waterhyacinthinnanhu.github.io/)<sup>1</sup>,
+[Yuping Wang](https://www.linkedin.com/in/yuping-wang-5a7178185/)<sup>1,2</sup>,
+[Zechun Liu](https://zechunliu.com/)<sup>3</sup>,
+[Jiachen Li](https://jiachenli94.github.io/)<sup>1</sup>
 
-`<sup>`1 `</sup>` University of California, Riverside &nbsp; `<sup>`2 `</sup>` University of Michigan &nbsp; `<sup>`3 `</sup>` Meta AI
+<sup>1</sup> University of California, Riverside  
+<sup>2</sup> University of Michigan  
+<sup>3</sup> Meta AI
 
 <p align="center">
   <img src="https://rdd-neurips.github.io/static/images/method.png" style="max-width: 75%; height: auto;">
