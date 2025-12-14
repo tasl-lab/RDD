@@ -5,6 +5,11 @@
 ![NeurIPS](https://img.shields.io/badge/NeurIPS-2025-purple)
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 
+<p align="center">
+  <img src="resources/figures/teaser.png" style="max-width: 75%; height: auto;">
+  <br>
+</p>
+
 **RDD** is an retrieval-based visual demonstration decomposer that automatically identifies sub-tasks visually similar to a set of existing expert-labeled sub-tasks.
 
 [Mingxuan Yan](https://waterhyacinthinnanhu.github.io/)<sup>1</sup>,
@@ -16,6 +21,12 @@
 <sup>2</sup> University of Michigan  
 <sup>3</sup> Meta AI
 
+## Applications
+
+- **Sub-task Discovery with Prior:** Different to non-prior heuristic sub-task discovery algorithms such as [UVD](https://arxiv.org/abs/2310.08581), RDD identifies sub-tasks that are **visually similar to ones in a given expert labeled sub-task dataset**. This is specially useful when generating additional sub-tasks for fine-tuning or data augmentation, which encourages the policy to reuse learned skills from the original dataset.
+- **Planner-visuomotor Alignment:** In hierarchical VLAs, the planner, often a powerful VLM, performs task planning and reasoning to break down complex tasks into simpler sub-tasks with step-by-step language instructions. Conditioned on the generated sub-task instructions, a learning-based visuomotor policy, trained on datasets with short-horizon sub-tasks, performs precise manipulation to complete the sub-tasks one by one, thereby completing long-horizon tasks. RDD automatically decomposes demonstrations into sub-tasks by **aligning the visual features of the decomposed sub-task intervals with those from the training data of the low-level visuomotor policies.**
+
+## Method
 <p align="center">
   <img src="https://rdd-neurips.github.io/static/images/method.png" style="max-width: 75%; height: auto;">
   <br>
@@ -24,10 +35,6 @@
   </span>
 </p>
 
-## Applications
-
-- **Sub-task Discovery with Prior:** Different to non-prior heuristic sub-task discovery algorithms such as [UVD](https://arxiv.org/abs/2310.08581), RDD identifies sub-tasks that are **visually similar to ones in a given expert labeled sub-task dataset**. This is specially useful when generating additional sub-tasks for fine-tuning or data augmentation, which encourages the policy to reuse learned skills from the original dataset.
-- **Planner-visuomotor Alignment:** In hierarchical VLAs, the planner, often a powerful VLM, performs task planning and reasoning to break down complex tasks into simpler sub-tasks with step-by-step language instructions. Conditioned on the generated sub-task instructions, a learning-based visuomotor policy, trained on datasets with short-horizon sub-tasks, performs precise manipulation to complete the sub-tasks one by one, thereby completing long-horizon tasks. RDD automatically decomposes demonstrations into sub-tasks by **aligning the visual features of the decomposed sub-task intervals with those from the training data of the low-level visuomotor policies.**
 
 # Installation
 
