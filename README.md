@@ -2,7 +2,8 @@
 
 [![arXiv](https://img.shields.io/badge/arXiv-2510.14968-red)](https://arxiv.org/pdf/2510.14968)
 [![Website](https://img.shields.io/badge/Website-RDD-blue)](https://rdd-neurips.github.io/)
-![NeurIPS](https://img.shields.io/badge/NeurIPS-2025-purple)
+[![NeurIPS](https://img.shields.io/badge/NeurIPS-2025-purple)](https://neurips.cc/virtual/2025/loc/san-diego/poster/115042)
+[![YouTube](https://img.shields.io/badge/YouTube-Video-white)](https://www.youtube.com/watch?v=bwCgUyqdT6s&embeds_referring_euri=https%3A%2F%2Frdd-neurips.github.io%2F&source_ve_path=OTY3MTQ)
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 
 <p align="center">
@@ -12,21 +13,22 @@
 
 **RDD** is an retrieval-based visual demonstration decomposer that automatically identifies sub-tasks visually similar to a set of existing expert-labeled sub-tasks.
 
-[Mingxuan Yan](https://waterhyacinthinnanhu.github.io/)<sup>1</sup>,
-[Yuping Wang](https://www.linkedin.com/in/yuping-wang-5a7178185/)<sup>1,2</sup>,
-[Zechun Liu](https://zechunliu.com/)<sup>3</sup>,
-[Jiachen Li](https://jiachenli94.github.io/)<sup>1</sup>
+[Mingxuan Yan](https://waterhyacinthinnanhu.github.io/)`<sup>`1`</sup>`,
+[Yuping Wang](https://www.linkedin.com/in/yuping-wang-5a7178185/)`<sup>`1,2`</sup>`,
+[Zechun Liu](https://zechunliu.com/)`<sup>`3`</sup>`,
+[Jiachen Li](https://jiachenli94.github.io/)`<sup>`1`</sup>`
 
-<sup>1</sup> University of California, Riverside  
-<sup>2</sup> University of Michigan  
-<sup>3</sup> Meta AI
+`<sup>`1`</sup>` University of California, Riverside
+`<sup>`2`</sup>` University of Michigan
+`<sup>`3`</sup>` Meta AI
 
 ## Applications
 
 - **Sub-task Discovery with Prior:** Different to non-prior heuristic sub-task discovery algorithms such as [UVD](https://arxiv.org/abs/2310.08581), RDD identifies sub-tasks that are **visually similar to ones in a given expert labeled sub-task dataset**. This is specially useful when generating additional sub-tasks for fine-tuning or data augmentation, which encourages the policy to reuse learned skills from the original dataset.
-- **Planner-visuomotor Alignment:** In hierarchical VLAs, the planner, often a powerful VLM, performs task planning and reasoning to break down complex tasks into simpler sub-tasks with step-by-step language instructions. Conditioned on the generated sub-task instructions, a learning-based visuomotor policy, trained on datasets with short-horizon sub-tasks, performs precise manipulation to complete the sub-tasks one by one, thereby completing long-horizon tasks. RDD automatically decomposes demonstrations into sub-tasks by **aligning the visual features of the decomposed sub-task intervals with those from the training data of the low-level visuomotor policies.**
+- **Planner-visuomotor Alignment:** ([Youtube Video](https://www.youtube.com/watch?v=bwCgUyqdT6s&embeds_referring_euri=https%3A%2F%2Frdd-neurips.github.io%2F&source_ve_path=OTY3MTQ)) In hierarchical VLAs, the planner, often a powerful VLM, performs task planning and reasoning to break down complex tasks into simpler sub-tasks with step-by-step language instructions. Conditioned on the generated sub-task instructions, a learning-based visuomotor policy, trained on datasets with short-horizon sub-tasks, performs precise manipulation to complete the sub-tasks one by one, thereby completing long-horizon tasks. RDD automatically decomposes demonstrations into sub-tasks by **aligning the visual features of the decomposed sub-task intervals with those from the training data of the low-level visuomotor policies.**
 
 ## Method
+
 <p align="center">
   <img src="https://rdd-neurips.github.io/static/images/method.png" style="max-width: 75%; height: auto;">
   <br>
@@ -34,7 +36,6 @@
   <em>RDD formulates demonstration decomposition as an optimal partitioning problem, using retrieval with approximate nearest neighbor search (ANNS) and dynamic programming to efficiently find the optimal decomposition strategy.</em>
   </span>
 </p>
-
 
 # Installation
 
