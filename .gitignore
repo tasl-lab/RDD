@@ -3,5 +3,6 @@ __pycache__
 data
 .vscode
 .old
+tmp
 .superpowers
 docs/superpowers
