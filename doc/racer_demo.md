@@ -74,6 +74,13 @@ Repeat per method to produce one finetuning dataset each.
 ./scripts/eval/finetune_llava.sh <datagen_run_dir> rdd   # -> checkpoints/rdd
 ```
 
+> **GPU selection.** The training GPUs are set *inside the fork*, not by this wrapper:
+> edit `export CUDA_VISIBLE_DEVICES=...` at the top of
+> `3rdparty/Open-LLaVA-NeXT/scripts/finetune_task_lora_local_mytrain.sh` to match your
+> free devices (the count also determines `GPUS_PER_NODE`). With 4×48GB GPUs a full
+> 2-epoch LoRA run over the RDD dataset takes ~9 minutes and writes
+> `checkpoints/<name>/adapter_model.safetensors` (~700MB).
+
 ## 6. Serve planner + tokenizer
 
 ```bash
