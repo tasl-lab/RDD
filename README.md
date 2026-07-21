@@ -64,6 +64,11 @@ See [agi_cerebra_demo.md](doc/agi_cerebra_demo.md)
 
 See [racer_demo.md](doc/racer_demo.md)
 
+# Reproducing the Paper
+
+See [reproduction.md](doc/reproduction.md) for which experiment reproduces each table, the
+compute and disk budget, and known pitfalls.
+
 # Custom Prior
 
 RDD allows you to define your own sub-task prior.

@@ -115,15 +115,24 @@ Each `experiments/*.sh` driver only **aggregates** existing run dirs — you mus
 
 ## Expected results (from the paper, arXiv:2510.14968)
 
-**Main — multi-task success rate on RLBench (avg % ± std, avg rank; lower rank better):**
+**Table 1 — multi-task success rate on RLBench (avg % ± std, avg rank; lower rank better).**
+Averaged over 10 seeds and the 13 tasks on which the visuomotor policy itself exceeds 35%
+success — that task filter is exactly what `--exclude-suboptimal-tasks` applies:
 
 | Method | Success ↑ | Rank ↓ |
 |--------|-----------|--------|
-| w/o Finetune | 52.6 ± 8.2 | 4.5 |
-| Uniform (fixed-interval) | 71.3 ± 5.4 | 3.1 |
-| UVD | 71.4 ± 5.1 | 3.0 |
-| **RDD (ours)** | **74.9 ± 6.9** | **2.2** |
-| Expert (heuristic) | 75.1 ± 4.7 | 2.2 |
+| w/o Finetune | 52.6 ± 8.2 | 4.5 ± 1.2 |
+| Uniform (fixed-interval) | 71.3 ± 5.4 | 3.1 ± 1.2 |
+| UVD | 71.4 ± 5.1 | 3.0 ± 1.3 |
+| **RDD (ours)** | **74.9 ± 6.9** | **2.2 ± 0.9** |
+| Expert (heuristic) | 75.1 ± 4.7 | 2.2 ± 1.0 |
+
+**Table 7 — Gemini-2.5-Pro planner comparison** (`experiments/gemini_pro.sh`):
+
+| Method | Success ↑ | Rank ↓ |
+|--------|-----------|--------|
+| Gemini-2.5-Pro | 72.6 ± 4.7 | 1.7 ± 0.4 |
+| **RDD (ours)** | **74.9 ± 6.9** | **1.3 ± 0.4** |
 
 RDD matches expert-level decomposition without expert labels. Ablations
 (encoder, α, #demos, vector-sampling rate) and the Gemini-2.5-Pro planner
