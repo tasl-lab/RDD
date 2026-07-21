@@ -60,6 +60,10 @@ See [franka_demo.md](doc/franka_demo.md)
 
 See [agi_cerebra_demo.md](doc/agi_cerebra_demo.md)
 
+# Example #4: RACER (Hierarchical VLA)
+
+See [racer_demo.md](doc/racer_demo.md)
+
 # Custom Prior
 
 RDD allows you to define your own sub-task prior.
@@ -98,7 +102,7 @@ def rdd_score(
 ## Checklist
 
 * [X] Release the core algorithm and demo scripts on AgiBotWorld & RoboCerebra. (ETA: by the end of Oct.2025).
-* [ ] Release use case scripts on hiearchical VLA (RACER). (ETA: expect delay, by the end of Feb.2026)
+* [X] Release use case scripts on hiearchical VLA (RACER).
 
 ## Citation
 
