@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e -x
 
-# Same as eval_racer.sh but restricted to a 16-task subset (train-set /
+# Same as eval_racer.sh but restricted to a 15-task subset (train-set /
 # generalization experiment). Output dir convention is unchanged.
 #   $1 EVALUATOR_NUM   $2 EXP_NAME
 
