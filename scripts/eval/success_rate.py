@@ -1,8 +1,7 @@
-import re
 from pathlib import Path
 import sys, os
 sys.path.append(os.getcwd())
-from typing import List, Dict, Any, Union
+from typing import List, Dict
 
 import typer
 import numpy as np
