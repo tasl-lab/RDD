@@ -34,11 +34,20 @@ Two RLBench datasets are needed (neither is downloaded by the setup script):
 ## 2. Build the vector database (expert sub-task prior)
 
 ```bash
-python build_vec_database.py 0 liv 1.0 data/rlbench_raw/RACER-augmented_rlbench \
+python build_vec_database.py 0 liv 1.0 data/rlbench_raw/RACER-augmented_rlbench/train \
 	--name-suffix rlbench_aug_liv_1.0 \
 	--views front_rgb \
 	--embed-mode default
 ```
+
+The dataset path must point at the **split** directory (`.../train`), whose immediate
+children are the task folders (`close_jar`, `insert_onto_square_peg`, ...). Pointing it
+at the dataset root instead would treat `train`/`val`/`samples` as task names.
+
+> **Note:** vector databases must be built with this (`rdd`) code. Databases produced by
+> the earlier `gdd`-named version cannot be loaded — their cached index metadata
+> (`index.ann.meta.pkl`) stores `gdd.*` class paths and unpickling raises
+> `ModuleNotFoundError: No module named 'gdd'`. Rebuild them with the command above.
 
 ## 3. Serve the RDD decomposer
 
