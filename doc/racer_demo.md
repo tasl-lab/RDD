@@ -77,10 +77,13 @@ Run once per method (`vanilla_llava`, `fixed_interval`, `uvd`, `heuristic`, `rdd
 ## 8. Aggregate results
 
 ```bash
-./scripts/eval/experiments/main.sh      # main success-rate comparison
-./scripts/eval/experiments/abl_alpha.sh # ablations: alpha / encoder / ep-num / vec-sample
-./scripts/eval/experiments/gemini_pro.sh
-./scripts/eval/experiments/train_set.sh
+./scripts/eval/experiments/main.sh           # main success-rate comparison
+./scripts/eval/experiments/abl_alpha.sh      # ablation: retrieval-prior weight alpha
+./scripts/eval/experiments/abl_encoder.sh    # ablation: visual encoder
+./scripts/eval/experiments/abl_ep_num.sh     # ablation: number of demos
+./scripts/eval/experiments/abl_vec_sample.sh # ablation: vector-database sampling rate
+./scripts/eval/experiments/gemini_pro.sh     # Gemini-2.5-Pro planner baseline
+./scripts/eval/experiments/train_set.sh      # generalization to unseen tasks
 ```
 
 ## Expected results (from the paper, arXiv:2510.14968)
