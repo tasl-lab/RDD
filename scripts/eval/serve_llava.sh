@@ -14,20 +14,21 @@ if ! is_int "$PORT"; then echo "Error: Port must be an integer."; exit 1; fi
 DEVICE=$2
 if ! is_int "$DEVICE"; then echo "Error: Device must be an integer."; exit 1; fi
 MODEL_NAME=$3
+if [[ -z "$MODEL_NAME" ]]; then echo "Error: MODEL_NAME (\$3) is required (a checkpoint name, or 'vanilla_llava'/'llama3-llava-next-8b' for the baseline)."; exit 1; fi
 
 eval "$(conda shell.bash hook)"
 conda activate llava-next
 cd 3rdparty/Open-LLaVA-NeXT
 
-if [[ "$MODEL_NAME" == "llama3-llava-next-8b" ]]; then
+if [[ "$MODEL_NAME" == "llama3-llava-next-8b" || "$MODEL_NAME" == "vanilla_llava" ]]; then
 	echo "Using original (vanilla) llava model"
-	CUDA_VISIBLE_DEVICES=$DEVICE python deploy/llava_server.py \
+	exec env CUDA_VISIBLE_DEVICES=$DEVICE python deploy/llava_server.py \
 		--model-path ../models/llama3-llava-next-8b \
 		--model-name llava_llama3_lora \
 		--port $PORT
 else
 	echo "Using finetuned llava model"
-	CUDA_VISIBLE_DEVICES=$DEVICE python deploy/llava_server.py \
+	exec env CUDA_VISIBLE_DEVICES=$DEVICE python deploy/llava_server.py \
 		--model-path ./checkpoints/$MODEL_NAME \
 		--model-base ../models/llama3-llava-next-8b \
 		--model-name llava_llama3_lora \

@@ -26,6 +26,7 @@ create_directory_if_not_exists $model_path; model_path=$(cd $model_path && pwd);
 
 # switch to cuda 11.7 (RACER requirement)
 source $switch_cuda_script 11.7
+set -e  # switch_cuda.sh runs 'set +e'; re-enable fail-fast for the rest of setup
 
 echo 'Setting up racer environment...'
 cd $lib_path
