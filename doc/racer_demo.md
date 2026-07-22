@@ -106,12 +106,11 @@ Run once per method (`vanilla_llava`, `fixed_interval`, `uvd`, `heuristic`, `rdd
 ./scripts/eval/experiments/abl_alpha.sh      # ablation: retrieval-prior weight alpha
 ./scripts/eval/experiments/abl_encoder.sh    # ablation: visual encoder
 ./scripts/eval/experiments/abl_ep_num.sh     # ablation: number of demos
-./scripts/eval/experiments/abl_vec_sample.sh # ablation: vector-database sampling rate
 ./scripts/eval/experiments/gemini_pro.sh     # Gemini-2.5-Pro planner baseline
 ./scripts/eval/experiments/train_set.sh      # generalization to unseen tasks
 ```
 
-Each `experiments/*.sh` driver only **aggregates** existing run dirs — you must first produce those runs (stages 2/4/5/7) with the varied parameter and the matching tag: encoder → build the prior with a different encoder, tag `rdd_<encoder>`; `alpha` → set `alpha` in `configs/rdd_server.yaml`, tag `rdd_alpha_<a>`; sampling rate → build the prior at a different rate, tag `rdd_sr_<r>`; demo count → regenerate planner data with a different `NUMBER_OF_EP`, tag `rdd_ep1`; Gemini planner → serve the Gemini-2.5-Pro planner, tag `gemini_2.5_pro`. The train-set (generalization) experiment uses `scripts/eval/eval_racer_partial.sh` (15-task subset) to produce the `heuristic_trainset-<seed>` runs that `train_set.sh` aggregates.
+Each `experiments/*.sh` driver only **aggregates** existing run dirs — you must first produce those runs (stages 2/4/5/7) with the varied parameter and the matching tag: encoder → build the prior with a different encoder, tag `rdd_<encoder>`; `alpha` → set `alpha` in `configs/rdd_server.yaml`, tag `rdd_alpha_<a>`; demo count → regenerate planner data with a different `NUMBER_OF_EP`, tag `rdd_ep1`; Gemini planner → serve the Gemini-2.5-Pro planner, tag `gemini_2.5_pro`. The train-set (generalization) experiment uses `scripts/eval/eval_racer_partial.sh` (15-task subset) to produce the `heuristic_trainset-<seed>` runs that `train_set.sh` aggregates.
 
 ## Expected results (from the paper, arXiv:2510.14968)
 
@@ -135,7 +134,7 @@ success — that task filter is exactly what `--exclude-suboptimal-tasks` applie
 | **RDD (ours)** | **74.9 ± 6.9** | **1.3 ± 0.4** |
 
 RDD matches expert-level decomposition without expert labels. Ablations
-(encoder, α, #demos, vector-sampling rate) and the Gemini-2.5-Pro planner
+(encoder, α, #demos) and the Gemini-2.5-Pro planner
 comparison are reproduced by the `scripts/eval/experiments/*.sh` drivers; see
 the paper for the full per-table numbers. Decomposition-accuracy (IoU) is
 covered separately by [Example #3](agi_cerebra_demo.md) via `eval_rdd.py`.

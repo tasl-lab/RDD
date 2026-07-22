@@ -16,7 +16,6 @@ what each table needs, what it costs, and the pitfalls that only show up when yo
 | Table 5 | Decomposition accuracy (IoU), AgiBotWorld / RoboCerebra | decomposition only | `eval_rdd.py` — see [Example #3](agi_cerebra_demo.md) |
 | Table 6 | Planner without finetuning on the target task (transfer to unseen tasks) | RACER (15-task subset) | `experiments/train_set.sh` |
 | Table 7 | Gemini-2.5-Pro planner baseline | RACER | `experiments/gemini_pro.sh` |
-| — | Ablation: vector-database sampling rate | RACER | `experiments/abl_vec_sample.sh` |
 
 Appendix tables extend Tables 1–4 with the per-task breakdown over all 18 RLBench tasks; the
 drivers above already print per-task rows alongside the average.
@@ -25,10 +24,6 @@ drivers above already print per-task rows alongside the average.
 `success_rate.py --exclude-train-tasks` drops the three finetuning tasks (`close_jar`,
 `insert_onto_square_peg`, `light_bulb_in`), which is exactly the complement of the 15-task list
 in `eval_racer_partial.sh` — use that script to produce the runs.
-
-The **vector-database sampling-rate** ablation has no corresponding table in the paper. The
-driver is included because the code supports it (build the prior with a lower sampling rate,
-tag the runs `rdd_sr_<r>`), but treat it as an extra rather than a published result.
 
 **Table 5 is by far the cheapest** — it needs only the decomposer (no simulator, no planner
 finetuning). If you want to validate RDD itself, start there. Everything else routes through
