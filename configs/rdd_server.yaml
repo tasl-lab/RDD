@@ -1,6 +1,9 @@
 decomposer: ['rdd', 'uvd']
 preprocessor: "liv"
-device: "cuda:5"
+# GPU the encoder is loaded on. Note that scripts/eval/serve_rdd.sh starts uvicorn
+# with 8 workers, and each worker loads its own copy of the encoder onto this
+# device — lower the worker count if you are short on VRAM.
+device: "cuda:0"
 chunk_size: 64
 views:
   - "front_rgb"
