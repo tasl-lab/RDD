@@ -111,6 +111,36 @@ def rdd_score(
 * [X] Release the core algorithm and demo scripts on AgiBotWorld & RoboCerebra. (ETA: by the end of Oct.2025).
 * [X] Release use case scripts on hiearchical VLA (RACER).
 
+## Acknowledgements
+
+RDD builds on a number of open-source projects and datasets, and we thank their authors for
+releasing their code and data.
+
+**Decomposition.** [UVD](https://github.com/zcczhang/UVD) serves both as a baseline and, via
+`rdd/uvd_wrapper.py`, as a component of RDD's scoring function.
+
+**Visual encoders.** [LIV](https://github.com/penn-pal-lab/LIV),
+[R3M](https://github.com/facebookresearch/r3m), [VIP](https://github.com/facebookresearch/vip),
+[VC-1](https://github.com/facebookresearch/eai-vc), [CLIP](https://github.com/openai/CLIP), and
+[DINOv2](https://github.com/facebookresearch/dinov2). Retrieval uses
+[Annoy](https://github.com/spotify/annoy).
+
+**Hierarchical VLA use case ([Example #4](doc/racer_demo.md)).** Built on
+[RACER](https://github.com/sled-group/RACER) and its data-generation pipeline, which in turn
+build on [RVT-2](https://github.com/NVlabs/RVT) and [PerAct](https://github.com/peract/peract).
+The planner is [LLaVA-NeXT](https://github.com/LLaVA-VL/LLaVA-NeXT), finetuned and served
+through [Open-LLaVA-NeXT](https://github.com/xiaoachen98/Open-LLaVA-NeXT). Evaluation runs in
+[RLBench](https://github.com/stepjam/RLBench) on
+[PyRep](https://github.com/stepjam/PyRep)/CoppeliaSim.
+
+**Datasets.** [AgiBotWorld-Alpha](https://huggingface.co/datasets/agibot-world/AgiBotWorld-Alpha)
+and [RoboCerebra](https://huggingface.co/datasets/qiukingballball/RoboCerebra)
+([Example #3](doc/agi_cerebra_demo.md)), and RLBench demonstrations
+([Example #4](doc/racer_demo.md)).
+
+**Vendored utility.** `scripts/setup/switch_cuda.sh` is the MIT-licensed `switch-cuda`
+utility, Copyright (c) 2018 Patrick Hohenecker, included unmodified with its license header.
+
 ## Citation
 
 If you find this work useful, please consider citing our paper:
