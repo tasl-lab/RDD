@@ -41,7 +41,7 @@ def get_success_rate(exp_path, exclude_suboptimal_tasks: bool = False, exclude_t
 		task_name = task_path.name
 		if exclude_suboptimal_tasks and any(task_name.startswith(t) for t in SUB_OPTIMAL_TASKS):
 			continue
-		if exclude_train_tasks and task_name in TRAIN_FINETUNE_TASKS:
+		if exclude_train_tasks and any(task_name.startswith(t) for t in TRAIN_FINETUNE_TASKS):
 			continue
 		if task_name.startswith("test"):
 			continue
@@ -75,6 +75,14 @@ def get_latex_tab_format(decimal: int = 1):
 
 
 def print_results(all_res: dict, decimal: int = 1, n_lines: int = 2):
+	lengths = {task: len(v) for task, v in all_res.items()}
+	if len(set(lengths.values())) > 1:
+		majority = max(set(lengths.values()), key=list(lengths.values()).count)
+		odd = sorted(t for t, n in lengths.items() if n != majority)
+		raise ValueError(
+			f"Runs cover different task sets ({sorted(set(lengths.values()))} runs per task); "
+			f"aggregate would be meaningless. Inconsistent tasks: {odd}"
+		)
 	all_res_array = np.array(list(all_res.values()))  # (task_n, exp_n)
 	means, stds = get_stat(all_res)
 	num_format, pattern = get_latex_tab_format(decimal)

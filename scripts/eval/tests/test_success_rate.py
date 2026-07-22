@@ -60,7 +60,20 @@ def test_exclude_suboptimal_and_train_tasks():
 		assert set(means.keys()) == {"open_drawer", "stack_blocks"}
 
 
+def test_ragged_task_coverage_raises():
+	mod = _load_module()
+	# two "runs" with different task sets -> aggregation must refuse, not guess
+	all_res = {"open_drawer": [1.0, 0.5], "turn_tap": [1.0]}
+	try:
+		mod.print_results(all_res)
+	except ValueError as e:
+		assert "different task sets" in str(e)
+		return
+	raise AssertionError("print_results should refuse ragged task coverage")
+
+
 if __name__ == "__main__":
 	test_basic_success_rate()
 	test_exclude_suboptimal_and_train_tasks()
+	test_ragged_task_coverage_raises()
 	print("OK")

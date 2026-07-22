@@ -66,6 +66,10 @@ method, then:
 ```bash
 cd 3rdparty/RACER-DataGen && bash pipeline.sh
 ```
+Set `GOOGLE_API_KEY_DECOMPOSER` and `GOOGLE_API_KEY_LABELER` in
+`racer_datagen/utils/const_utils.py` (the Gemini keys used for rich-language labelling),
+alongside `RDD_SERVER_ADDR`.
+
 Repeat per method to produce one finetuning dataset each.
 
 ## 5. Finetune the planner
@@ -110,11 +114,15 @@ Run once per method (`vanilla_llava`, `fixed_interval`, `uvd`, `heuristic`, `rdd
 ./scripts/eval/experiments/abl_alpha.sh      # ablation: retrieval-prior weight alpha
 ./scripts/eval/experiments/abl_encoder.sh    # ablation: visual encoder
 ./scripts/eval/experiments/abl_ep_num.sh     # ablation: number of demos
-./scripts/eval/experiments/gemini_pro.sh     # Gemini-2.5-Pro planner baseline
+./scripts/eval/experiments/gemini_pro.sh     # Gemini-2.5-Pro decomposer baseline
 ./scripts/eval/experiments/train_set.sh      # generalization to unseen tasks
 ```
 
-Each `experiments/*.sh` driver only **aggregates** existing run dirs — you must first produce those runs (stages 2/4/5/7) with the varied parameter and the matching tag: encoder → build the prior with a different encoder, tag `rdd_<encoder>`; `alpha` → set `alpha` in `configs/rdd_server.yaml`, tag `rdd_alpha_<a>`; demo count → regenerate planner data with a different `NUMBER_OF_EP`, tag `rdd_ep1`; Gemini planner → serve the Gemini-2.5-Pro planner, tag `gemini_2.5_pro`. The train-set (generalization) experiment uses `scripts/eval/eval_racer_partial.sh` (15-task subset) to produce the `heuristic_trainset-<seed>` runs that `train_set.sh` aggregates.
+`success_rate.py` accumulates results into `tmp/eval/success_rate.pkl`; the rank column
+covers everything logged since the last `--clear-log`, so run a comparison's drivers as a
+group (each shipped driver already passes `--clear-log` first and `--summary` last).
+
+Each `experiments/*.sh` driver only **aggregates** existing run dirs — you must first produce those runs (stages 2/4/5/7) with the varied parameter and the matching tag: encoder → build the prior with a different encoder, tag `rdd_<encoder>`; `alpha` → set `alpha` in `configs/rdd_server.yaml`, tag `rdd_alpha_<a>`; demo count → regenerate planner data with a different `NUMBER_OF_EP`, tag `rdd_ep1`; Gemini decomposer → run stage 4 with `KEYPT_METHOD=gemini-2.5-pro-preview-05-06`, finetune that dataset (`finetune_llava.sh <dir> gemini_2.5_pro`), serve it like any other checkpoint, and eval with tag `gemini_2.5_pro`. The train-set (generalization) experiment uses `scripts/eval/eval_racer_partial.sh` (15-task subset) to produce the `heuristic_trainset-<seed>` runs that `train_set.sh` aggregates. The ablation drivers use 3 seeds (the paper's setting for Tables 2-4) while `main.sh` uses 10. The baseline row of each ablation is the same configuration as the main `rdd` run, so `rdd_liv-<s>` and `rdd_alpha_1.0-<s>` can simply be symlinks to `rdd-<s>` rather than re-run.
 
 ## Expected results (from the paper, arXiv:2510.14968)
 
@@ -130,7 +138,7 @@ success — that task filter is exactly what `--exclude-suboptimal-tasks` applie
 | **RDD (ours)** | **74.9 ± 6.9** | **2.2 ± 0.9** |
 | Expert (heuristic) | 75.1 ± 4.7 | 2.2 ± 1.0 |
 
-**Table 7 — Gemini-2.5-Pro planner comparison** (`experiments/gemini_pro.sh`):
+**Table 7 — Gemini-2.5-Pro decomposer comparison** (`experiments/gemini_pro.sh`):
 
 | Method | Success ↑ | Rank ↓ |
 |--------|-----------|--------|
@@ -138,7 +146,7 @@ success — that task filter is exactly what `--exclude-suboptimal-tasks` applie
 | **RDD (ours)** | **74.9 ± 6.9** | **1.3 ± 0.4** |
 
 RDD matches expert-level decomposition without expert labels. Ablations
-(encoder, α, #demos) and the Gemini-2.5-Pro planner
+(encoder, α, #demos) and the Gemini-2.5-Pro decomposer
 comparison are reproduced by the `scripts/eval/experiments/*.sh` drivers; see
 the paper for the full per-table numbers. Decomposition-accuracy (IoU) is
 covered separately by [Example #3](agi_cerebra_demo.md) via `eval_rdd.py`.
