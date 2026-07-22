@@ -76,28 +76,6 @@ cd 3rdparty/RACER-DataGen && bash pipeline.sh    # KEYPT_METHOD=<M>; needs a Gem
 `vanilla_llava` skips the datagen and finetune steps — it serves the base
 `llama3-llava-next-8b` directly.
 
-## If your numbers don't match
-
-Setup problems announce themselves — a missing Gemini key, an unset `DISPLAY`, or a busy GPU
-all raise immediately, and [Example #4](racer_demo.md) flags them at the step where they bite.
-The three failures below are the dangerous ones: each produces a plausible-looking number
-instead of an error.
-
-**Wrong dataset path when building the prior.** `build_vec_database.py` globs the path you
-give it for *task* folders, so passing the dataset root instead of `.../train` silently treats
-`train`, `val` and `samples` as tasks and builds a meaningless prior — no error, just worse
-results.
-
-**Renamed run directories.** `eval_racer.sh <n> <M>` writes `<runs>/<model>/<M>-0 … <M>-9`, and
-the `experiments/*.sh` drivers glob exactly that. A different layout aggregates fewer runs, or
-none, without complaining.
-
-**Omitting `--exclude-suboptimal-tasks`.** It restricts to the 13 tasks where the visuomotor
-policy itself exceeds 35% success — the task set the paper reports. Without it you get a
-well-formed average over the wrong task set. (Relatedly, `success_rate.py` accumulates into
-`tmp/eval/success_rate.pkl`; the ranking column covers everything logged since the last
-`--clear-log`. The shipped drivers handle this.)
-
 ## Reference numbers
 
 `experiments/main.sh` on a correct set of runs should reproduce Table 1:
