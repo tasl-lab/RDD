@@ -1,6 +1,6 @@
 # # Core scientific computing
 # numpy>=1.25.0,<2.0.0
-# scipy>=1.13.0
+scipy>=1.13.0
 
 # # Deep learning
 # torch>=1.13.0,<2.1.0

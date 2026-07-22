@@ -3,19 +3,19 @@
 This guide covers reproducing the quantitative results in
 [RDD (NeurIPS 2025)](https://arxiv.org/pdf/2510.14968). The core algorithm demos live in
 Examples #1–#4 from the [README](../README.md); this document is the practical companion —
-what each table needs, what it costs, and the pitfalls that only show up when you run it.
+what each table needs, what it costs, and the practical details that only show up when you run it.
 
 ## Which table needs which pipeline
 
-| Paper table | What it measures | Pipeline | Driver |
-|---|---|---|---|
-| Table 1 | RLBench multi-task success rate (5 decomposition methods) | RACER, full 8 stages | `scripts/eval/experiments/main.sh` |
-| Table 2 | Ablation: visual encoder | RACER | `experiments/abl_encoder.sh` |
-| Table 3 | Ablation: retrieval weight α | RACER | `experiments/abl_alpha.sh` |
-| Table 4 | Ablation: number of demos in the prior | RACER | `experiments/abl_ep_num.sh` |
-| Table 5 | Decomposition accuracy (IoU), AgiBotWorld / RoboCerebra | decomposition only | `eval_rdd.py` — see [Example #3](agi_cerebra_demo.md) |
-| Table 6 | Planner without finetuning on the target task (transfer to unseen tasks) | RACER (15-task subset) | `experiments/train_set.sh` |
-| Table 7 | Gemini-2.5-Pro planner baseline | RACER | `experiments/gemini_pro.sh` |
+| Paper table | What it measures | Pipeline | Driver | Seeds |
+|---|---|---|---|---|
+| Table 1 | RLBench multi-task success rate (5 decomposition methods) | RACER, full 8 stages | `scripts/eval/experiments/main.sh` | 10 |
+| Table 2 | Ablation: visual encoder | RACER | `experiments/abl_encoder.sh` | 3 |
+| Table 3 | Ablation: retrieval weight α | RACER | `experiments/abl_alpha.sh` | 3 |
+| Table 4 | Ablation: number of demos in the prior | RACER | `experiments/abl_ep_num.sh` | 3 |
+| Table 5 | Decomposition accuracy (IoU), AgiBotWorld / RoboCerebra | decomposition only | `eval_rdd.py` — see [Example #3](agi_cerebra_demo.md) | n/a |
+| Table 6 | Planner without finetuning on the target task (transfer to unseen tasks) | RACER (15-task subset) | `experiments/train_set.sh` | 10 |
+| Table 7 | Gemini-2.5-Pro decomposer baseline (replaces RDD at stage 4) | RACER | `experiments/gemini_pro.sh` | 10 |
 
 Appendix tables extend Tables 1–4 with the per-task breakdown over all 18 RLBench tasks; the
 drivers above already print per-task rows alongside the average.
@@ -35,6 +35,7 @@ Measured on 8×RTX 6000 Ada (49GB). Per-unit figures are real; totals are extrap
 
 | Step | Time | Resources |
 |---|---|---|
+| One-time model downloads (`setup_racer_env.sh`) | once | **t5-11b ~45GB, llama3-llava-next-8b ~16GB, plus the RLBench datasets** — dominate first-run disk |
 | Build vector DB (1 task, ~100 eps, LIV) | ~30 s | 1 GPU |
 | Build vector DB (all 18 tasks, rate 1.0) | minutes | 1 GPU, **~10 GB disk** |
 | Decompose one 166-frame episode | ~10 s (RDD) / ~5 s (UVD) | 1 GPU |
@@ -89,4 +90,5 @@ cd 3rdparty/RACER-DataGen && bash pipeline.sh    # KEYPT_METHOD=<M>; needs a Gem
 | Expert (heuristic) | 75.1 ± 4.7 | 2.2 ± 1.0 |
 
 Averaged over 10 seeds and the 13-task filtered set. If your averages land far from these,
-check pitfalls 1, 5 and 7 first — each produces plausible-looking but wrong aggregates.
+re-check the dataset path used to build the prior (it must be the split directory), that your
+run directories follow `<method>-<seed>`, and that you passed `--exclude-suboptimal-tasks`.

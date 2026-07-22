@@ -53,4 +53,4 @@ python racer/evaluation/rollout.py \
 done
 
 end=$(date +%s)
-printf "Execution time: %.2f minutes\n" "$(echo "($end - $start) / 60" | bc -l)"
+printf "Execution time: %d min %d s\n" $(( (end-start)/60 )) $(( (end-start)%60 ))

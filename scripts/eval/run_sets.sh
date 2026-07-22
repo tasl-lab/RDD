@@ -8,7 +8,7 @@ LLAVA_DEVICES=(4 5)            # GPUs for the two planner workers
 LLAVA_PORTS=(21002 21003)     # must match --vlm-address in eval_racer.sh
 EVALUATOR_NUM=6               # evaluators passed to eval_racer.sh
 WARMUP_SECONDS=240           # time to let the planner servers load
-# Each set name is a finetuned planner checkpoint, or 'llama3-llava-next-8b'
+# Each set name is a finetuned planner checkpoint, or 'vanilla_llava'
 # for the vanilla / w-o-finetune baseline. Rollout logs land in
 # <RUNS_DIR>/<MODEL>/<set_name>-<seed>.
 sets=("rdd")
