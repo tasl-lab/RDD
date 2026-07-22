@@ -37,7 +37,7 @@
   </span>
 </p>
 
-# Installation
+## Installation
 
 Set up python environment:
 
@@ -48,32 +48,34 @@ conda create -n rdd python==3.9 -y && conda activate rdd
 
 This default installation only supports encoders `LIV`, `ClIP`, `ResNet`. To install full support for other encoders (  `VIP `, `R3M `, `VC-1`) please follow [setup_rdd_env.sh](./scripts/setup/setup_rdd_env.sh).
 
-# Example #1: Kitchen Cleaning
+## Examples
+
+### Example #1: Kitchen Cleaning
 
 See [kitchen_demo.md](doc/kitchen_demo.md)
 
-# Example #2: Franka Object Arranging
+### Example #2: Franka Object Arranging
 
 See [franka_demo.md](doc/franka_demo.md)
 
-# Example #3: AgiBotWorld & RoboCerebra
+### Example #3: AgiBotWorld & RoboCerebra
 
 See [agi_cerebra_demo.md](doc/agi_cerebra_demo.md)
 
-# Example #4: RACER (Hierarchical VLA)
+### Example #4: RACER (Hierarchical VLA)
 
 See [racer_demo.md](doc/racer_demo.md)
 
-# Reproducing the Paper
+### Reproduction
 
 See [reproduction.md](doc/reproduction.md) for which experiment reproduces each table, the
 compute and disk budget, and per-experiment seed counts.
 
-# Custom Prior
+## Custom Prior
 
 RDD allows you to define your own sub-task prior.
 
-## Custom Sub-task Feature
+### Custom Sub-task Feature
 
 In RDD the sub-task is represented by the feature of of ending frame / starting frame. You can define your own sub-task feature by modifying sub-task feature generation class  ` subtask_embeds_to_feature` in  `rdd/embed.py`
 
@@ -90,7 +92,7 @@ class subtask_embeds_to_feature(object):
 		<your implementation>
 ```
 
-## Custom Sub-task Prior Score
+### Custom Sub-task Prior Score
 
 You can also define a completely custimized sub-task prior score by modifying `rdd_score` in `rdd/algorithms.py`
 
