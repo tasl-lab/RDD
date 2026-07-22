@@ -28,3 +28,8 @@ beta: 0.1
 # vec_database_path: "data/vec_databases/robocerebra_train/train"
 # mode: "ood" # * will override alpha to 0.0
 # beta: 0.25
+
+# # rlbench (RACER)
+# vec_database_path: "data/vec_databases/rlbench_aug_liv_1.0/train"
+# mode: "default"
+# beta: 0.0
