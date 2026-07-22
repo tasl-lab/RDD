@@ -92,6 +92,10 @@ Repeat per method to produce one finetuning dataset each.
 
 ## 7. Evaluate (RVT2 rollout, 10 seeds)
 
+CoppeliaSim needs a display and `COPPELIASIM_ROOT` set. Start one before evaluating —
+`tigervncserver :2`, or headless with `Xvfb :2 -screen 0 1024x768x24` — and point
+`VNC_DISPLAY` in `eval_racer.sh` at it.
+
 ```bash
 ./scripts/eval/run_sets.sh              # brings planner up, runs eval, tears down
 # or directly, with planner/tokenizer already serving:

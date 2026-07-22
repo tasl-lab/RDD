@@ -76,50 +76,27 @@ cd 3rdparty/RACER-DataGen && bash pipeline.sh    # KEYPT_METHOD=<M>; needs a Gem
 `vanilla_llava` skips the datagen and finetune steps — it serves the base
 `llama3-llava-next-8b` directly.
 
-## Pitfalls
+## If your numbers don't match
 
-These are real failure modes, each hit while validating this release.
+Setup problems announce themselves — a missing Gemini key, an unset `DISPLAY`, or a busy GPU
+all raise immediately, and [Example #4](racer_demo.md) flags them at the step where they bite.
+The three failures below are the dangerous ones: each produces a plausible-looking number
+instead of an error.
 
-**1. The vector-database path must be the split directory.**
-`build_vec_database.py` globs the path you give it for *task* folders. Pass
-`.../RACER-augmented_rlbench/train`, not the dataset root — the root would silently treat
-`train`, `val` and `samples` as task names and build a meaningless prior with no error.
+**Wrong dataset path when building the prior.** `build_vec_database.py` globs the path you
+give it for *task* folders, so passing the dataset root instead of `.../train` silently treats
+`train`, `val` and `samples` as tasks and builds a meaningless prior — no error, just worse
+results.
 
-**2. Vector databases must be built by this code.**
-Databases produced by the earlier `gdd`-named version cannot be loaded: their cached index
-metadata (`index.ann.meta.pkl`) stores `gdd.*` class paths, and unpickling fails with
-`ModuleNotFoundError: No module named 'gdd'`. Rebuild rather than reuse.
+**Renamed run directories.** `eval_racer.sh <n> <M>` writes `<runs>/<model>/<M>-0 … <M>-9`, and
+the `experiments/*.sh` drivers glob exactly that. A different layout aggregates fewer runs, or
+none, without complaining.
 
-**3. Finetune GPU selection lives in the fork.**
-`finetune_llava.sh` exposes no GPU option; edit `export CUDA_VISIBLE_DEVICES=...` at the top
-of `3rdparty/Open-LLaVA-NeXT/scripts/finetune_task_lora_local_mytrain.sh`. The number of
-devices there also sets `GPUS_PER_NODE`. With busy GPUs you get an OOM and no hint.
-
-**4. The no-finetune baseline uses a reserved tag.**
-Serve it as `vanilla_llava` (or `llama3-llava-next-8b`); both select the base model. Any other
-tag is treated as a finetuned checkpoint name under `checkpoints/`.
-
-**5. Run directories must follow `<method>-<seed>`.**
-`eval_racer.sh <n> <M>` writes `<runs>/<model>/<M>-0 … <M>-9`, which is exactly what the
-`experiments/*.sh` drivers glob. Renaming them breaks aggregation silently.
-
-**6. Aggregation is stateful.**
-`success_rate.py` accumulates into `tmp/eval/success_rate.pkl`. Pass `--clear-log` on the
-first invocation of a comparison and `--summary` on the last — the shipped drivers already do
-this, and the ranking column is computed across everything logged since the last clear.
-
-**7. `--exclude-suboptimal-tasks` is part of the protocol, not a convenience.**
-It restricts to the 13 tasks where the visuomotor policy itself exceeds 35% success, which is
-the task set the paper reports. Omitting it yields numbers that will not match Table 1.
-
-**8. Datagen needs Gemini API keys.**
-Set `GOOGLE_API_KEY_DECOMPOSER` and `GOOGLE_API_KEY_LABELER` in
-`3rdparty/RACER-DataGen/racer_datagen/utils/const_utils.py`, plus `RDD_SERVER_ADDR` pointing
-at the port-8001 decomposer when `KEYPT_METHOD=rdd`.
-
-**9. The simulator needs a display.**
-`eval_racer.sh` exports `DISPLAY=:2`. Start a VNC server (`tigervncserver :2`) or
-`Xvfb :2 -screen 0 1024x768x24` first, and set `COPPELIASIM_ROOT`.
+**Omitting `--exclude-suboptimal-tasks`.** It restricts to the 13 tasks where the visuomotor
+policy itself exceeds 35% success — the task set the paper reports. Without it you get a
+well-formed average over the wrong task set. (Relatedly, `success_rate.py` accumulates into
+`tmp/eval/success_rate.pkl`; the ranking column covers everything logged since the last
+`--clear-log`. The shipped drivers handle this.)
 
 ## Reference numbers
 
